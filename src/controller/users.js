@@ -34,11 +34,24 @@ const createNewUsers = async (req , res) =>{
   }
 }
 
-const updateUser = (req , res) =>{
-  res.json({
-    message: `Update User ${req.params.id}` , 
-    data : req.body
-  })
+const updateUser = async (req , res) =>{
+  const id = req.params.id 
+  const body = req.body 
+  try {
+    await usersModels.updateUsers(body, id)
+    res.json({
+      message: `Update user with ID ${id}` , 
+      data : {
+        id : id , 
+        ...body
+      }
+    })
+  } catch (error) {
+    res.status(500).json({
+      message : 'Error Connecting to Database' , 
+      serverMessage : error , 
+    })
+  }
 }
 
 const deleteUser = (req, res) =>{
