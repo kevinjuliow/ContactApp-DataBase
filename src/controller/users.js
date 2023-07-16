@@ -54,14 +54,23 @@ const updateUser = async (req , res) =>{
   }
 }
 
-const deleteUser = (req, res) =>{
+const deleteUser = async (req, res) =>{
   const {id} = req.params
-  res.json({
-    message : "Delete User Success " , 
-    data  : {
-      id : id 
-    }
-  })
+  try {
+    await usersModels.deleteUsers(id)
+    res.json({
+      message : "Delete User Success " , 
+      data  : {
+        id : id , 
+      }
+    })
+  } catch (error) {
+    res.status(500).json({
+      message : 'Error Connecting to Database' , 
+      serverMessage : error , 
+    })
+  }
+ 
 }
 
 
